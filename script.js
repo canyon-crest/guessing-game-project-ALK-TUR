@@ -229,7 +229,12 @@ function updateTimers(endMs, wasWin) {
     const avgTimeMs = totalTimeMs / gamesCount;
     avgTime.textContent = "Average Time: " + formatTime(avgTimeMs);
     // update fastest time display
-    fastest.textContent = "Fastest Time: " + formatTime(fastestWinMs);
+    if (fastestWinMs === Infinity) {
+        fastest.textContent = "Fastest Time: N/A";
+        return;
+    } else {
+        fastest.textContent = "Fastest Time: " + formatTime(fastestWinMs);
+    }
 }
 
 function formatTime(timeMs) {
