@@ -4,10 +4,12 @@ setInterval(function() {
 }, 1000);
 
 //global variables
-let score, answer, level;
+let score, answer, level, playerName;
 score = 0;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
+
+
 
 //event listeners
 playBtn.addEventListener("click", play);
@@ -27,13 +29,24 @@ function time() {
 
 //play function
 function play() {
+    // Require and format user name before starting
+    let raw = (document.getElementById("userName").value || "").trim();
+    if (!raw) {
+        msg.textContent = "Please enter your name to start.";
+        document.getElementById("userName").focus();
+        return;
+    }
+    // Title-case the name (first letter of each word uppercase)
+    playerName = raw.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    document.getElementById("userName").value = playerName;
+
     //enable guess button and give up button
     guessBtn.disabled = false;
     giveUpBtn.disabled = false;
     playBtn.disabled = true;
     
     //reset message
-    msg.textContent = "Game started! Make your guess.";
+    msg.textContent = playerName + ", game started! Make your guess.";
 
     for (let i=0; i<levelArr.length; i++) {
         levelArr[i].disabled = true;
@@ -43,7 +56,7 @@ function play() {
     }
 
     answer = Math.floor(Math.random() * level) + 1;
-    msg.textContent = "Game started! Guess a number between 1 and " + level + ".";
+    msg.textContent = playerName + ", game started! Guess a number between 1 and " + level + ".";
 
     console.log(answer);
 }
@@ -53,7 +66,7 @@ function makeGuess() {
     let userGuess = parseInt(guess.value);
 
     if (isNaN(userGuess) || userGuess < 1 || userGuess > level) {
-        msg.textContent = "Please enter a VALID number between 1 and " + level + ".";
+        msg.textContent = playerName + ", please enter a VALID number between 1 and " + level + ".";
         return;
     }
     score++; 
@@ -61,16 +74,16 @@ function makeGuess() {
         guessBtn.disabled = true;
         giveUpBtn.disabled = true;
         playBtn.disabled = false;
-        msg.textContent = "You guessed the correct number " + answer + "!" + " It took you " + score + " attempts.";
+        msg.textContent = playerName + " guessed the correct number " + answer + "!" + " It took you " + score + " attempts.";
         for (let i=0; i<levelArr.length; i++) {
             levelArr[i].disabled = false;
         }
         updateScore(true);
         score = 0;
     } else if (userGuess < answer) {
-        msg.textContent = "Too low!";
+        msg.textContent = playerName + ", number is too low!";
     } else if (userGuess > answer) {
-        msg.textContent = "Too high!";
+        msg.textContent = playerName + ", number is too high!";
     }
 }
 //give up
