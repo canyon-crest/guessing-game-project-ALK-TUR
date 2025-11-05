@@ -75,6 +75,17 @@ function makeGuess() {
         giveUpBtn.disabled = true;
         playBtn.disabled = false;
         msg.textContent = playerName + " guessed the correct number " + answer + "!" + " It took you " + score + " attempts.";
+        // qualitative score feedback
+        (function(){
+            var ratio = score / level;
+            var quality;
+            if (ratio <= 0.10) quality = "Excellent";
+            else if (ratio <= 0.25) quality = "Good";
+            else if (ratio <= 0.50) quality = "OK";
+            else if (ratio <= 0.75) quality = "Fair";
+            else quality = "Bad";
+            msg.textContent += " Your score was " + quality + ".";
+        })();
         for (let i=0; i<levelArr.length; i++) {
             levelArr[i].disabled = false;
         }
@@ -146,6 +157,17 @@ function giveUp() {
     }
     msg.textContent = playerName + ", game over! The correct answer was " + answer + ".";
     score = level;
+    // qualitative score feedback for give up (always worst since score equals range)
+    (function(){
+        var ratio = score / level; // will be 1
+        var quality;
+        if (ratio <= 0.10) quality = "Excellent";
+        else if (ratio <= 0.25) quality = "Good";
+        else if (ratio <= 0.50) quality = "OK";
+        else if (ratio <= 0.75) quality = "Fair";
+        else quality = "Bad";
+        msg.textContent += " Your score was " + quality + ".";
+    })();
     updateScore(false);
 }   
 
