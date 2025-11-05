@@ -9,7 +9,18 @@ score = 0;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 
-
+const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const daySuffix = function(day) {
+    if (day >= 11 && day <= 13) {
+        return day + "th";
+    }
+    switch (day % 10) {
+        case 1: return day + "st";
+        case 2: return day + "nd";
+        case 3: return day + "rd";
+        default: return day + "th";
+    }
+};
 
 //event listeners
 playBtn.addEventListener("click", play);
@@ -22,7 +33,8 @@ function time() {
     let hours = d.getHours();
     let minutes = d.getMinutes();
     let seconds = d.getSeconds();
-    str = d.getMonth()+1 + "/" + d.getDate() + "/" + d.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
+    monthRightNow = month[d.getMonth()];
+    str = monthRightNow + " " + daySuffix(d.getDate()) + " " + d.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
     return str;
 }
 
