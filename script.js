@@ -9,6 +9,12 @@ score = 0;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 
+// timing variables
+let startMs = 0;          // round start time
+let totalTimeMs = 0;      // total time across all games (wins + give ups)
+let gamesCount = 0;       // number of games played (wins + give ups)
+let fastestWinMs = Infinity; // fastest successful game duration
+
 const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const daySuffix = function(day) {
     if (day >= 11 && day <= 13) {
@@ -60,6 +66,9 @@ function play() {
     //reset message
     msg.textContent = playerName + ", game started! Make your guess.";
 
+    // start round timer
+    startMs = Date.now();
+
     for (let i=0; i<levelArr.length; i++) {
         levelArr[i].disabled = true;
         if (levelArr[i].checked) {
@@ -102,7 +111,9 @@ function makeGuess() {
             levelArr[i].disabled = false;
         }
         
-        updateScore(true);
+    // record round time (win)
+    updateTimers(Date.now(), true);
+    updateScore(true);
         score = 0;
         //I used co-pilot to help me write cold/hot feedbacks because i didnt understand what is rubric asking. 
     } else if (userGuess < answer) {
@@ -169,6 +180,8 @@ function giveUp() {
     }
     msg.textContent = playerName + ", game over! The correct answer was " + answer + ".";
     score = level;
+    // record round time (give up)
+    updateTimers(Date.now(), false);
     // qualitative score feedback for give up (always worst since score equals range)
     (function(){
         var ratio = score / level; // will be 1
@@ -183,3 +196,22 @@ function giveUp() {
     updateScore(false);
 }   
 
+// only updates when winning, and also record the time for completed games
+function updateTimers(endMs, wasWin) {
+    const roundTimeMs = endMs - startMs;
+    totalTimeMs += roundTimeMs;
+    gamesCount++;
+    // update fastest win time
+    if (wasWin && roundTimeMs < fastestWinMs) {
+        fastestWinMs = roundTimeMs;
+    }
+    // update average time display
+    const avgTimeMs = totalTimeMs / gamesCount;
+    avgTime.textContent = "Average Time: " + formatTime(avgTimeMs);
+    // update fastest time display
+    fastest.textContent = "Fastest Time: " + formatTime(fastestWinMs);
+}
+
+function formatTime(timeMs) {
+    return (timeMs / 1000).toFixed(2) + " seconds";
+}
