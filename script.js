@@ -126,7 +126,7 @@ function giveUp() {
     for (let i=0; i<levelArr.length; i++) {
         levelArr[i].disabled = false;
     }
-    msg.textContent = "Game over! The correct answer was " + answer + ".";
+    msg.textContent = playerName + ", game over! The correct answer was " + answer + ".";
     score = level;
     updateScore(false);
 }   
