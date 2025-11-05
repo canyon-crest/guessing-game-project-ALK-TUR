@@ -36,9 +36,9 @@ guess.addEventListener('keydown', (e) => {
 });
 
 //sound feature
-const winSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg');
-const loseSound = new Audio('https://actions.google.com/sounds/v1/cartoon/metal_clang.ogg');
-const guessSound = new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg');
+const winSound = new Audio('sounds/clang_and_wobble.ogg');
+const loseSound = new Audio('sounds/metal.ogg');
+const guessSound = new Audio('sounds/pop.ogg');
 
 //time and date function
 function time() {
