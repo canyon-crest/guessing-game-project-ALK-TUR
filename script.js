@@ -34,6 +34,9 @@ guessBtn.addEventListener("click", makeGuess);
 guess.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !guessBtn.disabled) makeGuess();
 });
+themeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+});
 
 //sound feature
 const winSound = new Audio('sounds/clang_and_wobble.ogg');
