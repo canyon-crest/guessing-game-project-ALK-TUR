@@ -35,6 +35,11 @@ guess.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !guessBtn.disabled) makeGuess();
 });
 
+//sound feature
+const winSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg');
+const loseSound = new Audio('https://actions.google.com/sounds/v1/cartoon/metal_clang.ogg');
+const guessSound = new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg');
+
 //time and date function
 function time() {
     let d = new Date();
@@ -88,7 +93,7 @@ function play() {
 //make guess
 function makeGuess() {
     let userGuess = parseInt(guess.value);
-
+    guessSound.play();
     if (isNaN(userGuess) || userGuess < 1 || userGuess > level) {
         msg.textContent = playerName + ", please enter a VALID number between 1 and " + level + ".";
         return;
@@ -98,6 +103,7 @@ function makeGuess() {
         guessBtn.disabled = true;
         giveUpBtn.disabled = true;
         playBtn.disabled = false;
+        winSound.play();
         msg.textContent = playerName + " guessed the correct number " + answer + "!" + " It took you " + score + " attempts.";
         // qualitative score feedback
         (function(){
@@ -140,6 +146,8 @@ function makeGuess() {
         else heat = "(Very hot)";
         msg.textContent = playerName + ", number is too high! " + heat;
     }
+
+    setHeatBar(userGuess);
 }
 //give up
 giveUpBtn.addEventListener("click", function() {
@@ -180,6 +188,7 @@ function updateScore(wasWin) {
 
 function giveUp() {
     //disable guess button and give up button
+    loseSound.play();
     guessBtn.disabled = true;
     giveUpBtn.disabled = true;
     playBtn.disabled = false;
@@ -222,4 +231,10 @@ function updateTimers(endMs, wasWin) {
 
 function formatTime(timeMs) {
     return (timeMs / 1000).toFixed(2) + " seconds";
+}
+
+function setHeatBar(userGuess){
+    const diff = Math.abs(userGuess - answer);
+    const ratio = 1 - Math.min(diff/level, 1); //getting closer to 1
+    heatfill.style.width = (ratio*100).toFixed(0) + '%';
 }

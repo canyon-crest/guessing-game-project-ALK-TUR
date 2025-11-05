@@ -74,3 +74,17 @@ ol li {
 #giveUpBtn:disabled {
     background-color: #e6aeb3;
 }
+#heatbar {
+  width: 300px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 10px;
+  margin: 15px auto;
+  overflow: hidden;
+}
+#heatfill {
+  height: 100%;
+  width: 0;
+  background-color: #ff0000;
+  transition: width 0.3s ease;
+}
