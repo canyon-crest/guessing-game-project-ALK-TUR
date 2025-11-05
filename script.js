@@ -31,6 +31,9 @@ const daySuffix = function(day) {
 //event listeners
 playBtn.addEventListener("click", play);
 guessBtn.addEventListener("click", makeGuess);
+guess.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !guessBtn.disabled) makeGuess();
+});
 
 //time and date function
 function time() {
@@ -139,7 +142,12 @@ function makeGuess() {
     }
 }
 //give up
-giveUpBtn.addEventListener("click", giveUp);
+giveUpBtn.addEventListener("click", function() {
+    confirmGiveUp = confirm(playerName + ", are you sure you want to give up?");
+    if (confirmGiveUp) {
+        giveUp();
+    }
+});
 
 function updateScore(wasWin) {
     if (wasWin) {
