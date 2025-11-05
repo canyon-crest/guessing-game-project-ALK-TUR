@@ -80,10 +80,27 @@ function makeGuess() {
         }
         updateScore(true);
         score = 0;
+        //I used co-pilot to help me write cold/hot feedbacks because i didnt understand what is rubric asking. 
     } else if (userGuess < answer) {
-        msg.textContent = playerName + ", number is too low!";
+        const diff = Math.abs(userGuess - answer);
+        const ratio = diff / level;
+        let heat;
+        if (ratio >= 0.5) heat = "(Ice cold)";
+        else if (ratio >= 0.25) heat = "(Cold)";
+        else if (ratio >= 0.10) heat = "(Warm)";
+        else if (ratio >= 0.05) heat = "(Hot)";
+        else heat = "(Very hot)";
+        msg.textContent = playerName + ", number is too low! " + heat;
     } else if (userGuess > answer) {
-        msg.textContent = playerName + ", number is too high!";
+        const diff = Math.abs(userGuess - answer);
+        const ratio = diff / level;
+        let heat;
+        if (ratio >= 0.5) heat = "(Ice cold)";
+        else if (ratio >= 0.25) heat = "(Cold)";
+        else if (ratio >= 0.10) heat = "(Warm)";
+        else if (ratio >= 0.05) heat = "(Hot)";
+        else heat = "(Very hot)";
+        msg.textContent = playerName + ", number is too high! " + heat;
     }
 }
 //give up
